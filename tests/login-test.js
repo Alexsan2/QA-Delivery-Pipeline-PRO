@@ -1,43 +1,57 @@
 const { Builder } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
-const LoginPage = require('../pages/LoginPage'); // Importando sua lógica real
+const LoginPage = require('../pages/LoginPage');
+const ProductsPage = require('../pages/ProductsPage');
 
-async function rodarTesteReal() {
-    console.log("🚀 [PASSO 1] Iniciando o motor do Chrome...");
-    
+async function executarTesteCompleto() {
+    console.log("🚀 [INÍCIO] Teste: Login + Adicionar 2 Itens ao Carrinho");
+
     let options = new chrome.Options();
     options.addArguments('--remote-allow-origins=*');
-    options.addArguments('--no-sandbox');
-    options.addArguments('--disable-gpu');
 
-    let driver = await new Builder()
+    const driver = await new Builder()
         .forBrowser('chrome')
         .setChromeOptions(options)
         .build();
 
     try {
-        console.log("🖥️  [PASSO 2] Chrome aberto. Criando instância da página de login...");
         const login = new LoginPage(driver);
-        
-        console.log("🌐 [PASSO 3] Abrindo o site SauceDemo...");
-        await login.open();
-        
-        console.log("✍️  [PASSO 4] Preenchendo Usuário e Senha...");
-        await login.login('standard_user', 'secret_sauce');
+        const products = new ProductsPage(driver);
 
-        console.log("✅ [PASSO 5] LOGIN REALIZADO COM SUCESSO!");
+        // 1. Realizar Login
+        await login.open();
+        await login.login('standard_user', 'secret_sauce');
+        console.log("✅ Login realizado com sucesso!");
+
+        // 2. Verificar se entrou na página de produtos
+        await products.isOnProductsPage();
+
+        // 3. Adicionar o primeiro item (índice 0)
+        await products.addItemByIndex(0);
+        console.log("🛒 Primeiro item adicionado.");
+
+        // 4. Adicionar o segundo item (índice 1)
+        await products.addItemByIndex(1);
+        console.log("🛒 Segundo item adicionado.");
+
+        // 5. Validar se o carrinho marcou "2"
+        const qtd = await products.getCartCount();
         
-        // Espera 5 segundos para você ver o login feito antes de fechar
+        if (qtd === "2") {
+            console.log("🏆 SUCESSO: O carrinho contém " + qtd + " itens!");
+        } else {
+            console.log("❌ FALHA: O carrinho deveria ter 2 itens, mas tem: " + qtd);
+        }
+
+        // Aguarda um pouco para você ver o resultado no Chrome
         await driver.sleep(5000);
 
     } catch (err) {
-        console.log("❌ OCORREU UM ERRO NO TESTE:");
-        console.error(err);
+        console.error("💥 ERRO DURANTE A EXECUÇÃO:", err.message);
     } finally {
-        console.log("🏁 Finalizando o processo e fechando o navegador.");
         await driver.quit();
+        console.log("🏁 Teste finalizado.");
     }
 }
 
-console.log("🟢 Iniciando execução do teste de QA...");
-rodarTesteReal().then(() => console.log("✨ Teste completo."));
+executarTesteCompleto();
