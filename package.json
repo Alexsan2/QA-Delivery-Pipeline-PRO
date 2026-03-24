@@ -1,16 +1,27 @@
 {
   "name": "qa-delivery-pipeline-pro",
   "version": "1.0.0",
-  "description": "",
+  "description": "Projeto de Automação de Testes com foco em CI/CD e Metodologia Ágil",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node tests/smoke-test.js",
+    "test:checkout": "node tests/checkout-test.js",
+    "lint": "eslint ."
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "qa",
+    "automation",
+    "selenium",
+    "ci-cd",
+    "github-actions"
+  ],
+  "author": "Alex Sandro Pereira dos Santos",
   "license": "ISC",
-  "type": "commonjs",
+  "dependencies": {
+    "selenium-webdriver": "^4.16.0",
+    "chromedriver": "^122.0.0"
+  },
   "devDependencies": {
-    "eslint": "^10.1.0"
+    "eslint": "^8.56.0"
   }
 }
