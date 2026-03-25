@@ -12,18 +12,13 @@ jobs:
     - name: 📥 Checkout do Código
       uses: actions/checkout@v4
 
-    - name: 🟢 Instalar Node.js
+    - name: 🟢 Instalar Node.js 24
       uses: actions/setup-node@v4
       with:
-        node-version: "20"
-
-    - name: 🌐 Instalar Chrome Manualmente
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
+        node-version: "24"
 
     - name: 📦 Instalar Dependências
       run: npm install
 
-    - name: 🕵️‍♂️ Rodar Testes (Modo Headless Moderno)
+    - name: 🕵️‍♂️ Rodar Testes (Headless)
       run: node tests/checkout-test.js
