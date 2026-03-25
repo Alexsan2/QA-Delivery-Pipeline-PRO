@@ -2,6 +2,7 @@
   "name": "qa-delivery-pipeline-pro",
   "version": "1.0.0",
   "dependencies": {
-    "selenium-webdriver": "^4.15.0"
+    "selenium-webdriver": "^4.15.0",
+    "chromedriver-autoinstaller": "^1.0.1"
   }
 }
