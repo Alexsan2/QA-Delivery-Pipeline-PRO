@@ -17,8 +17,13 @@ jobs:
       with:
         node-version: "20"
 
-    - name: 📦 Instalar Selenium Atualizado
+    - name: 🌐 Instalar Chrome e Driver
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: stable
+
+    - name: 📦 Instalar Dependências
       run: npm install
 
-    - name: 🕵️‍♂️ Rodar Testes (O Selenium Manager baixará o driver)
+    - name: 🕵️‍♂️ Rodar Testes
       run: node tests/checkout-test.js
