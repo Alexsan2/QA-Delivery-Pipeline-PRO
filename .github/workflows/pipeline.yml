@@ -17,8 +17,8 @@ jobs:
       with:
         node-version: "20"
 
-    - name: 📦 Instalar Dependências
+    - name: 📦 Instalar Selenium Atualizado
       run: npm install
 
-    - name: 🕵️‍♂️ Rodar Testes (Headless)
+    - name: 🕵️‍♂️ Rodar Testes (O Selenium Manager baixará o driver)
       run: node tests/checkout-test.js

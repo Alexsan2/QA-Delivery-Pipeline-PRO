@@ -1,10 +1,10 @@
 {
   "name": "qa-delivery-pipeline-pro",
   "version": "1.0.0",
-  "description": "Automação SauceDemo com Selenium",
+  "description": "Automacao SauceDemo com Selenium Manager",
   "main": "tests/checkout-test.js",
   "dependencies": {
-    "selenium-webdriver": "^4.0.0"
+    "selenium-webdriver": "^4.29.0"
   },
   "scripts": {
     "test": "node tests/checkout-test.js"
