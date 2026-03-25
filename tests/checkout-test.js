@@ -5,12 +5,13 @@ const ProductsPage = require("../pages/ProductsPage");
 const CheckoutPage = require("../pages/CheckoutPage");
 
 async function executarHeadless() {
-    console.log("🕵️‍♂️ [INÍCIO] Teste E2E em Pipeline Linux...");
+    console.log("🕵️‍♂️ [INÍCIO] Teste E2E no GitHub Actions...");
     
     let options = new chrome.Options();
-    options.addArguments("--headless=new"); // Modo headless moderno
+    options.addArguments("--headless=new"); 
     options.addArguments("--no-sandbox");
     options.addArguments("--disable-dev-shm-usage");
+    options.addArguments("--disable-gpu");
     
     const driver = await new Builder()
         .forBrowser("chrome")
@@ -24,11 +25,11 @@ async function executarHeadless() {
 
         await login.open();
         await login.login("standard_user", "secret_sauce");
-        console.log("✅ Login OK");
+        console.log("✅ Login realizado.");
         
         await products.isOnProductsPage();
         await products.addItemByIndex(0);
-        console.log("✅ Item no carrinho");
+        console.log("✅ Item adicionado.");
         
         await checkout.goToCart();
         await checkout.startCheckout();
@@ -36,10 +37,10 @@ async function executarHeadless() {
         await checkout.finishOrder();
         
         const msg = await checkout.getSuccessMessage();
-        console.log("🏁 RESULTADO: " + msg);
+        console.log("🏁 RESULTADO FINAL: " + msg);
         
     } catch (e) { 
-        console.error("💥 ERRO NO TESTE: " + e.message);
+        console.error("💥 ERRO NO PIPELINE: " + e.message);
         process.exit(1); 
     } finally { 
         await driver.quit(); 

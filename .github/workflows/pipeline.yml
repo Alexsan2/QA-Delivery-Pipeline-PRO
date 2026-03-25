@@ -17,13 +17,13 @@ jobs:
       with:
         node-version: "20"
 
-    - name: 🌐 Instalar Chrome e Driver
-      uses: browser-actions/setup-chrome@v1
-      with:
-        chrome-version: stable
+    - name: 🌐 Instalar Chrome Manualmente
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
 
     - name: 📦 Instalar Dependências
       run: npm install
 
-    - name: 🕵️‍♂️ Rodar Testes
+    - name: 🕵️‍♂️ Rodar Testes (Modo Headless Moderno)
       run: node tests/checkout-test.js
