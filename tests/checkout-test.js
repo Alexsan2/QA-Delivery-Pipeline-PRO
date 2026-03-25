@@ -4,15 +4,15 @@ const LoginPage = require("../pages/LoginPage");
 const ProductsPage = require("../pages/ProductsPage");
 const CheckoutPage = require("../pages/CheckoutPage");
 
-async function executarHeadless() {
-    console.log("🕵️‍♂️ [INÍCIO] Teste E2E no GitHub Actions...");
+async function executarNoPipeline() {
+    console.log("🕵️‍♂️ [INFO] Iniciando teste no ambiente Linux...");
     
     let options = new chrome.Options();
-    options.addArguments("--headless=new"); 
+    options.addArguments("--headless=new");
     options.addArguments("--no-sandbox");
     options.addArguments("--disable-dev-shm-usage");
     options.addArguments("--disable-gpu");
-    
+
     const driver = await new Builder()
         .forBrowser("chrome")
         .setChromeOptions(options)
@@ -23,27 +23,30 @@ async function executarHeadless() {
         const products = new ProductsPage(driver);
         const checkout = new CheckoutPage(driver);
 
+        console.log("🔗 Acessando SauceDemo...");
         await login.open();
+        
+        console.log("🔑 Tentando Login...");
         await login.login("standard_user", "secret_sauce");
-        console.log("✅ Login realizado.");
         
         await products.isOnProductsPage();
+        console.log("✅ Logado com sucesso!");
+
         await products.addItemByIndex(0);
-        console.log("✅ Item adicionado.");
-        
         await checkout.goToCart();
         await checkout.startCheckout();
         await checkout.fillInformation("Alex", "Sandro", "72210000");
         await checkout.finishOrder();
         
         const msg = await checkout.getSuccessMessage();
-        console.log("🏁 RESULTADO FINAL: " + msg);
+        console.log("🏁 MENSAGEM FINAL: " + msg);
         
     } catch (e) { 
-        console.error("💥 ERRO NO PIPELINE: " + e.message);
+        console.error("💥 ERRO NO TESTE: " + e.message);
         process.exit(1); 
     } finally { 
         await driver.quit(); 
+        console.log("🏁 Navegador encerrado.");
     }
 }
-executarHeadless();
+executarNoPipeline();
