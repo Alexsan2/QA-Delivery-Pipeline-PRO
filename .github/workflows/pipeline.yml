@@ -3,24 +3,22 @@ name: QA Delivery Pipeline E2E
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   test-e2e:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 📥 Baixando o código do repositório
+    - name: 📥 Checkout do Código
       uses: actions/checkout@v4
 
-    - name: 🟢 Configurando Node.js
+    - name: 🟢 Instalar Node.js
       uses: actions/setup-node@v4
       with:
         node-version: "20"
 
-    - name: 📦 Instalando dependências
+    - name: 📦 Instalar Dependências
       run: npm install
 
-    - name: 🕵️‍♂️ Executando Testes em Modo Headless
+    - name: 🕵️‍♂️ Rodar Testes (Headless)
       run: node tests/checkout-test.js
